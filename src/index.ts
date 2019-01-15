@@ -14,6 +14,8 @@ createConnection({
   logging: false,
 })
   .then(async connection => {
+    let photoRepository = connection.getRepository(Photo);
+
     const app = express();
     app.set('view engine', 'pug');
     app.use(express.static('static'));
@@ -29,8 +31,13 @@ createConnection({
 
       let photo = new Photo();
       photo.origUrl = req.file.path;
-      await connection.manager.save(photo);
-      createImages(req.file.path, String(photo.id));
+
+      await photoRepository.save(photo);
+
+      let savedPhotos = await photoRepository.find();
+      console.log('All photos from the db:', savedPhotos);
+
+      createSizes(req.file.path, String(photo.id));
 
       return res.status(200).send(photo);
     });
@@ -44,7 +51,7 @@ createConnection({
 
 // Helper functions
 
-function createImages(imagePath: string, imageNumber: string) {
+function createSizes(imagePath: string, imageNumber: string) {
   const SIZES = [
     { name: 'sm', width: 512, quality: 80 },
     { name: 'md', width: 1024, quality: 80 },
@@ -55,7 +62,7 @@ function createImages(imagePath: string, imageNumber: string) {
       .jpeg({ quality: size.quality })
       .rotate()
       .resize(size.width)
-      .toFile(`static/${imageNumber}-${size.name}.jpg`, err => {
+      .toFile(`static/photos/${imageNumber}-${size.name}.jpg`, err => {
         if (err) {
           console.log(err);
         }

@@ -1,3 +1,5 @@
 .env
 node_modules/
+static/photos/
+uploads/
 mydb.sqlite3

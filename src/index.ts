@@ -3,13 +3,9 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { Photo } from './entity/Photo';
 import * as multer from 'multer';
-
-const app = express();
-app.set('view engine', 'pug');
-app.use(express.static('static'));
+import * as sharp from 'sharp';
 
 const upload = multer({ dest: 'uploads/' });
-
 createConnection({
   type: 'sqlite',
   database: './mydb.sqlite3',
@@ -18,30 +14,26 @@ createConnection({
   logging: false,
 })
   .then(async connection => {
-    // work with entities
-
-    // let photo = new Photo();
-    // photo.name = 'Me and Bears';
-    // photo.origUrl = 'photo-with-bears.jpg';
-
-    // await connection.manager.save(photo);
-    // console.log('Photo has been saved');
-
-    let savedPhotos = await connection.manager.find(Photo);
+    const app = express();
+    app.set('view engine', 'pug');
+    app.use(express.static('static'));
 
     app.get('/', (req, res) => {
       res.render('home');
     });
 
-    app.post('/upload', upload.single('file'), (req, res) => {
+    app.post('/upload', upload.single('file'), async (req, res) => {
       if (!req.file.mimetype.startsWith('image/jpeg')) {
         return res.status(422).json({ error: 'Jpegs only plz' });
       }
+
       let photo = new Photo();
       photo.origUrl = req.file.path;
-      return res.status(200).send(req.file);
-    });
+      await connection.manager.save(photo);
+      createImages(req.file.path, String(photo.id));
 
+      return res.status(200).send(photo);
+    });
     app.listen(3000, () => {
       console.log('Listening on Port 3000');
     });
@@ -49,3 +41,24 @@ createConnection({
   .catch(error => {
     console.log(error);
   });
+
+// Helper functions
+
+function createImages(imagePath: string, imageNumber: string) {
+  const SIZES = [
+    { name: 'sm', width: 512, quality: 80 },
+    { name: 'md', width: 1024, quality: 80 },
+    { name: 'lg', width: 2048, quality: 60 },
+  ];
+  SIZES.forEach(size => {
+    sharp(imagePath)
+      .jpeg({ quality: size.quality })
+      .rotate()
+      .resize(size.width)
+      .toFile(`static/${imageNumber}-${size.name}.jpg`, err => {
+        if (err) {
+          console.log(err);
+        }
+      });
+  });
+}

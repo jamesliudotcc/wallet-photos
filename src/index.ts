@@ -32,10 +32,22 @@ createConnection({
       let photo = new Photo();
       photo.origUrl = req.file.path;
 
-      await photoRepository.save(photo);
+      let newSavedPhoto = await photoRepository.save(photo);
 
-      let savedPhotos = await photoRepository.find();
-      console.log('All photos from the db:', savedPhotos);
+      let photoToUpdate = await photoRepository.findOne(newSavedPhoto.id);
+      if (photoToUpdate) {
+        photoToUpdate.smUrl = `${newSavedPhoto.id}-sm.jpg`;
+        photoToUpdate.mdUrl = `${newSavedPhoto.id}-md.jpg`;
+        photoToUpdate.lgUrl = `${newSavedPhoto.id}-lg.jpg`;
+        await photoRepository.save(photoToUpdate);
+      } // See if this can be re-written using try-catch?
+      // Fix async behavior where return happens before update.
+
+      /*
+      let savedPhotos = await photoRepository.find(); 
+      This await goes iwth the async in the app.post, use
+      similar logic to poll db before showing all the uploaded photos
+      */
 
       createSizes(req.file.path, String(photo.id));
 

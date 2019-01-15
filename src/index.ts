@@ -9,7 +9,7 @@ const upload = multer({ dest: 'uploads/' });
 
 // Constants:
 
-const STATIC_PHOTOS = '/static/photos/';
+const STATIC_PHOTOS = '/photos/';
 
 createConnection({
   type: 'sqlite',
@@ -52,12 +52,6 @@ createConnection({
       } // See if this can be re-written using try-catch?
       // Fix async behavior where return happens before update.
 
-      /*
-      let savedPhotos = await photoRepository.find(); 
-      This await goes iwth the async in the app.post, use
-      similar logic to poll db before showing all the uploaded photos
-      */
-
       createSizes(req.file.path, String(photo.id));
 
       return await res.status(200).send(photo);
@@ -66,8 +60,8 @@ createConnection({
     app.get('/photos', async (req, res) => {
       let allPhotos = await photoRepository.find();
       console.log(allPhotos);
-      res.json(
-        allPhotos
+      res.render('photos/photos', {
+        photos: allPhotos
           .filter(photo => {
             if (photo.smUrl) {
               return photo.smUrl;
@@ -77,8 +71,8 @@ createConnection({
             smUrl: STATIC_PHOTOS + photo.smUrl,
             mdUrl: STATIC_PHOTOS + photo.mdUrl,
             lgUrl: STATIC_PHOTOS + photo.lgUrl,
-          }))
-      );
+          })),
+      });
     });
 
     app.listen(3000, () => {

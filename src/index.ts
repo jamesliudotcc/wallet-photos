@@ -6,6 +6,11 @@ import * as multer from 'multer';
 import * as sharp from 'sharp';
 
 const upload = multer({ dest: 'uploads/' });
+
+// Constants:
+
+const STATIC_PHOTOS = '/static/photos/';
+
 createConnection({
   type: 'sqlite',
   database: './mydb.sqlite3',
@@ -21,7 +26,11 @@ createConnection({
     app.use(express.static('static'));
 
     app.get('/', (req, res) => {
-      res.render('home');
+      res.send('OK');
+    });
+
+    app.get('/upload', (req, res) => {
+      res.render('upload');
     });
 
     app.post('/upload', upload.single('file'), async (req, res) => {
@@ -51,8 +60,27 @@ createConnection({
 
       createSizes(req.file.path, String(photo.id));
 
-      return res.status(200).send(photo);
+      return await res.status(200).send(photo);
     });
+
+    app.get('/photos', async (req, res) => {
+      let allPhotos = await photoRepository.find();
+      console.log(allPhotos);
+      res.json(
+        allPhotos
+          .filter(photo => {
+            if (photo.smUrl) {
+              return photo.smUrl;
+            }
+          })
+          .map(photo => ({
+            smUrl: STATIC_PHOTOS + photo.smUrl,
+            mdUrl: STATIC_PHOTOS + photo.mdUrl,
+            lgUrl: STATIC_PHOTOS + photo.lgUrl,
+          }))
+      );
+    });
+
     app.listen(3000, () => {
       console.log('Listening on Port 3000');
     });

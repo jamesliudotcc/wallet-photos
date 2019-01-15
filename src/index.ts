@@ -59,9 +59,11 @@ createConnection({
 
     app.get('/photos', async (req, res) => {
       let allPhotos = await photoRepository.find();
-      console.log(allPhotos);
+
       res.render('photos/photos', {
-        photos: allPhotos
+        // This should live in a function
+        photos: [...allPhotos] // destructuring required for immutable
+          .reverse()
           .filter(photo => {
             if (photo.smUrl) {
               return photo.smUrl;

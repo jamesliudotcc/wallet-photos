@@ -1,15 +1,29 @@
+// Express required Imports
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
+const flash = require('connect-flash');
+const passport = require('./config/passportConfig');
+import * as session from 'express-session';
+require('dotenv').config();
+
+// DB requried imports
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { Photo } from './entity/Photo';
+
+// Upload requriements. These can go once upload
+// is refactored out
 import * as multer from 'multer';
 import * as sharp from 'sharp';
 
 const upload = multer({ dest: 'uploads/' });
+// End of upload required packages
 
 // Constants:
 
 const STATIC_PHOTOS = '/photos/';
+
+// Connect Database through TypeORM
 
 createConnection({
   type: 'sqlite',
@@ -21,9 +35,33 @@ createConnection({
   .then(async connection => {
     let photoRepository = connection.getRepository(Photo);
 
+    /* ****************************************
+    //              Initialize App
+    ******************************************/
+
     const app = express();
     app.set('view engine', 'pug');
+
+    /* ****************************************
+    //              Middlewares
+    ******************************************/
+
     app.use(express.static('static'));
+    app.use(
+      bodyParser.urlencoded({
+        extended: false,
+      })
+    );
+    app.use(
+      session({ secret: 'Secret', resave: false, saveUninitialized: true })
+    );
+    app.use(flash());
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    /* ****************************************
+    //              Routes
+    ******************************************/
 
     app.get('/', (req, res) => {
       res.send('OK');
@@ -57,25 +95,13 @@ createConnection({
       return await res.status(200).send(photo);
     });
 
-    app.get('/photos', async (req, res) => {
-      let allPhotos = await photoRepository.find();
+    // Include Controllers
+    app.use('/photos', require('./controllers/photos'));
+    app.use('/auth', require('./controllers/auth'));
 
-      res.render('photos/photos', {
-        // This should live in a function
-        photos: [...allPhotos] // destructuring required for immutable
-          .reverse()
-          .filter(photo => {
-            if (photo.smUrl) {
-              return photo.smUrl;
-            }
-          })
-          .map(photo => ({
-            smUrl: STATIC_PHOTOS + photo.smUrl,
-            mdUrl: STATIC_PHOTOS + photo.mdUrl,
-            lgUrl: STATIC_PHOTOS + photo.lgUrl,
-          })),
-      });
-    });
+    /* ****************************************
+    //              Listen
+    ******************************************/
 
     app.listen(3000, () => {
       console.log('Listening on Port 3000');

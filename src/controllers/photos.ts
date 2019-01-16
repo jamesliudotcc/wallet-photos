@@ -3,11 +3,28 @@ import { getRepository } from 'typeorm';
 import { Photo } from '../entity/Photo';
 
 const router = express.Router();
+let photoRepository = getRepository(Photo);
 
-router.get('/', (req, res) => {
-  getRepository(Photo).then(async repository) =>{
-  const photos = photoRepository.find({ select: ['smUrl'] });
-  res.send(getRepository(Photo).count());}
+const STATIC_PHOTOS = '/photos/';
+
+router.get('/', async (req, res) => {
+  let allPhotos = await photoRepository.find();
+  console.log(allPhotos.length);
+  res.render('photos/photos', {
+    // This should live in a function
+    photos: [...allPhotos] // destructuring required for immutable
+      .reverse()
+      .filter(photo => {
+        if (photo.smUrl) {
+          return photo.smUrl;
+        }
+      })
+      .map(photo => ({
+        smUrl: STATIC_PHOTOS + photo.smUrl,
+        mdUrl: STATIC_PHOTOS + photo.mdUrl,
+        lgUrl: STATIC_PHOTOS + photo.lgUrl,
+      })),
+  });
 });
 
 router.get('/:idx', (req, res) => {

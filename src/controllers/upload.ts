@@ -44,7 +44,7 @@ async function updateModelWithPhoto(req: Request, user) {
   let newSavedPhoto = await photoRepository.save(photo);
   let photoToUpdate = await photoRepository.findOne(newSavedPhoto.id);
   if (photoToUpdate) {
-    photoToUpdate.userId = user.id;
+    photoToUpdate.user = user.id;
     photoToUpdate.smUrl = `${newSavedPhoto.id}-sm.jpg`;
     photoToUpdate.mdUrl = `${newSavedPhoto.id}-md.jpg`;
     photoToUpdate.lgUrl = `${newSavedPhoto.id}-lg.jpg`;

@@ -6,6 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Photo } from './Photo';
 
 @Entity()
 export class User {
@@ -35,6 +36,9 @@ export class User {
 
   @Column()
   getEmails: boolean = false;
+
+  @OneToMany(type => Photo, photo => photo.user)
+  photos: Photo[];
 
   @BeforeInsert()
   hashPassword() {

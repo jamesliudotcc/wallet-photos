@@ -7,11 +7,11 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number = 0;
 
-  @Column()
-  userId: number = 0;
+  @ManyToOne(type => User, user => user.comments)
+  user: User;
 
-  @Column()
-  photoId: number = 0;
+  @ManyToOne(type => Photo, photo => photo.comments)
+  photo: Photo;
 
   @Column('timestamp')
   timestamp: Date = new Date();

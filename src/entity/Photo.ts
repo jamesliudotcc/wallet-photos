@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { User } from './User';
+import { Comment } from './Comment';
 
 @Entity()
 export class Photo {
@@ -26,4 +33,7 @@ export class Photo {
 
   @Column('timestamp')
   timestamp: Date = new Date();
+
+  @OneToMany(type => Comment, comment => comment.photo)
+  comments: Comment[];
 }

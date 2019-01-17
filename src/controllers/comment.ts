@@ -7,8 +7,8 @@ const commentRepository = getRepository(Comment);
 
 router.post('/', async (req, res) => {
   let comment = new Comment();
-  comment.photoId = req.body.photoId;
-  comment.userId = req.body.userId;
+  comment.photo = req.body.photoId;
+  comment.user = req.body.userId;
   comment.comment = req.body.comment;
 
   await commentRepository.save(comment);

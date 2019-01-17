@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Photo } from './Photo';
+import { Comment } from './Comment';
 
 @Entity()
 export class User {
@@ -39,6 +40,9 @@ export class User {
 
   @OneToMany(type => Photo, photo => photo.user)
   photos: Photo[];
+
+  @OneToMany(type => Comment, comment => comment.user)
+  comments: Comment[];
 
   @BeforeInsert()
   hashPassword() {

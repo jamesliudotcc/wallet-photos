@@ -4,7 +4,7 @@ import { getRepository, getManager } from 'typeorm';
 import { User } from '../entity/User';
 
 const router = express.Router();
-let userRepository = getRepository(User);
+const userRepository = getRepository(User);
 const manager = getManager();
 
 router.get('/signup', (req, res) => {

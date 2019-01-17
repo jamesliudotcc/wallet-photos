@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
         })),
       alerts: req.flash(),
       //@ts-ignore
-      user: user.name,
+      user: { name: user.name, id: user.id },
     });
   } else {
     // throw error;

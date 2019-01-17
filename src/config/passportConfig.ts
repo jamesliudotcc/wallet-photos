@@ -26,7 +26,6 @@ passport.use(
     },
     async (email, password, callback) => {
       //Still need to create User model from entity
-      console.log(email);
       try {
         const foundUser = await getRepository(User).findOne({
           where: { email: email },
@@ -37,7 +36,6 @@ passport.use(
           callback(null, null);
         } else {
           // good
-          console.log('good user');
           callback(null, foundUser);
         }
       } catch (callback) {

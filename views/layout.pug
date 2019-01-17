@@ -10,7 +10,9 @@ html
       ul
         if user
           li
-            =`Hello, ${user}`
+            =`Hello, ${user.name}`
+          li
+            a(href="/auth/logout") Logout
 
     .container
       include includes/alerts.pug

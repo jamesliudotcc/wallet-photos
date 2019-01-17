@@ -15,6 +15,12 @@ router.get('/login', (req, res) => {
   res.render('auth/login', { alerts: req.flash() });
 });
 
+router.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success', 'You logged out. Bye!');
+  res.redirect('/');
+});
+
 router.post('/signup', async (req, res) => {
   if (req.body.password != req.body.password2) {
     req.flash('error', 'Passwords must match');

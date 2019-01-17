@@ -10,6 +10,7 @@ require('dotenv').config();
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { Photo } from './entity/Photo';
+import { User } from './entity/User';
 
 // Upload requriements. These can go once upload
 // is refactored out
@@ -28,7 +29,7 @@ const STATIC_PHOTOS = '/photos/';
 createConnection({
   type: 'sqlite',
   database: './mydb.sqlite3',
-  entities: [Photo],
+  entities: [Photo, User],
   synchronize: true,
   logging: false,
 })

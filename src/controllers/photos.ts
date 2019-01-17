@@ -3,13 +3,13 @@ import { getRepository } from 'typeorm';
 import { Photo } from '../entity/Photo';
 
 const router = express.Router();
-let photoRepository = getRepository(Photo);
+let photoRepository = getRepository(Photo); // use const?
 
 const STATIC_PHOTOS = '/photos/';
 
 router.get('/', async (req, res) => {
   let allPhotos = await photoRepository.find();
-  console.log(allPhotos.length);
+
   res.render('photos/photos', {
     // This should live in a function
     photos: [...allPhotos] // destructuring required for immutable

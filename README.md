@@ -22,6 +22,8 @@ I chose SQLite to ease deployment (one less server to configure!) and so that ev
 
 TypeORM follows from choosing Typescript. It was designed to play well with a TS workflow, and is reasonably [well documented](https://github.com/typeorm/typeorm).
 
+However, as nice as it is to work with, in some ways it is not production ready. For example, it has problems interacting with foreign key constraints in SQLite. https://github.com/typeorm/typeorm/issues/2576
+
 #### Pug |> Tachyons
 
 Pug's syntax, suggestive of Python's, is easier to read and reason about. One advantage of using whitespace to auto-close HTML tags is that it allows me to see more of my html content at one time. Sometimes, I even use Pug to generate static html.

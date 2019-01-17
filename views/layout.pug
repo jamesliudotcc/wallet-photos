@@ -15,6 +15,13 @@ html
             a(href="/auth/logout") Logout
           li
             a(href="/upload") Upload
+          li
+            a(href="/photos") Photos
+        else
+          li
+            a(href="/auth/login") Login
+          li
+            a(href="/auth/signup") Sign Up
 
     .container
       include includes/alerts.pug

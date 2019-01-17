@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as passport from '../config/passportConfig';
+
 import { getRepository, getManager } from 'typeorm';
 import { User } from '../entity/User';
 

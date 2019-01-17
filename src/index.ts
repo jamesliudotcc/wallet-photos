@@ -11,6 +11,7 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import { Photo } from './entity/Photo';
 import { User } from './entity/User';
+import { Comment } from './entity/Comment';
 
 // End of upload required packages
 
@@ -23,7 +24,7 @@ const STATIC_PHOTOS = '/photos/';
 createConnection({
   type: 'sqlite',
   database: './mydb.sqlite3',
-  entities: [Photo, User],
+  entities: [Photo, User, Comment],
   synchronize: true,
   logging: false,
 })
@@ -78,6 +79,7 @@ createConnection({
     // Include Controllers
     app.use('/photos', require('./controllers/photos'));
     app.use('/upload', require('./controllers/upload'));
+    app.use('/comment', require('./controllers/comment'));
     /* ****************************************
     //              Listen
     ******************************************/

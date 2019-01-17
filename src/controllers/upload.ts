@@ -5,7 +5,6 @@ import * as sharp from 'sharp';
 import { getRepository } from 'typeorm';
 import { Photo } from '../entity/Photo';
 import { User } from '../entity/User';
-import { userInfo } from 'os';
 
 const router = express.Router();
 const photoRepository = getRepository(Photo);

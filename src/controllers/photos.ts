@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
           smUrl: STATIC_PHOTOS + photo.smUrl,
           mdUrl: STATIC_PHOTOS + photo.mdUrl,
           lgUrl: STATIC_PHOTOS + photo.lgUrl,
+          id: photo.id,
         })),
       alerts: req.flash(),
       //@ts-ignore

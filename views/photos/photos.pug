@@ -3,6 +3,9 @@ block content
   each photo in photos
     article
       img(src=photo.mdUrl)
+      ul
+        each comment in photo.comments
+          li= comment.comment
       form(action="/heart" method="POST")
         input(type="submit" value="<3")
       form(action="/comment" method="POST")

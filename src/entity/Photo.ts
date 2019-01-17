@@ -34,6 +34,6 @@ export class Photo {
   @Column('timestamp')
   timestamp: Date = new Date();
 
-  @OneToMany(type => Comment, comment => comment.photo)
+  @OneToMany(type => Comment, comment => comment.photo, { eager: true })
   comments: Comment[];
 }

@@ -1,6 +1,7 @@
-doctype html
+extends layout.pug
 
-body
+block content
+
   h1 Upload example
   form#upload(method="POST" action="/upload" enctype="multipart/form-data")
     input(name="file" type="file")

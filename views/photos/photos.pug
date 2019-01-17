@@ -1,3 +1,5 @@
-each photo in photos
-  img(src=photo.mdUrl)
-  hr
+extends ../layout.pug
+block content
+  each photo in photos
+    img(src=photo.mdUrl)
+    hr

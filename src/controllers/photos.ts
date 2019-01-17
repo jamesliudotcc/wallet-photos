@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   let allPhotos = await photoRepository.find();
 
   res.render('photos/photos', {
-    // This should live in a function
+    // This should live in a function ?
     photos: [...allPhotos] // destructuring required for immutable
       .reverse()
       .filter(photo => {
@@ -24,6 +24,7 @@ router.get('/', async (req, res) => {
         mdUrl: STATIC_PHOTOS + photo.mdUrl,
         lgUrl: STATIC_PHOTOS + photo.lgUrl,
       })),
+    alerts: req.flash(),
   });
 });
 

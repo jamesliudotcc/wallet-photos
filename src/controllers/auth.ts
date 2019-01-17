@@ -8,12 +8,11 @@ let userRepository = getRepository(User);
 const manager = getManager();
 
 router.get('/signup', (req, res) => {
-  //@ts-ignore
-  res.render('auth/signup', { previousData: null });
+  res.render('auth/signup', { previousData: null, alerts: req.flash() });
 });
+
 router.get('/login', (req, res) => {
-  //@ts-ignore
-  res.render('auth/login');
+  res.render('auth/login', { alerts: req.flash() });
 });
 
 router.post('/signup', async (req, res) => {

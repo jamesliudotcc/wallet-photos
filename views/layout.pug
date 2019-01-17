@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Wallet Photos
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css")
+
+  body
+    nav
+      a(href='/') Site
+      ul
+        if user
+          li
+            =`Hello, ${user.firstname}`
+
+    .container
+      include includes/alerts.pug
+      block content
+
+      

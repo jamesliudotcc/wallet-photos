@@ -1,12 +1,15 @@
-h1 Login
+extends ../layout.pug
 
-form(method="POST", action="/auth/login")
+block content
+  h1 Login
 
-  p Email
-    input(type="email", name="email" id="email"  value=previousData ? previousData.email : '')
+  form(method="POST", action="/auth/login")
 
-  p Password
-    input(type="password" name="password" id="password")
+    p Email
+      input(type="email", name="email" id="email"  value=previousData ? previousData.email : '')
 
-  p
-    input(type="submit" value="Submit")
+    p Password
+      input(type="password" name="password" id="password")
+
+    p
+      input(type="submit" value="Submit")

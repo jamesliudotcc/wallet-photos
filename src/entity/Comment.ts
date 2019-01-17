@@ -11,8 +11,8 @@ export class Comment {
   @Column()
   photoId: number = 0;
 
-  @Column('datetime')
-  datetime: Date = new Date();
+  @Column('timestamp')
+  timestamp: Date = new Date();
 
   @Column('text')
   comment: string = '';

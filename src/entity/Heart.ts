@@ -11,6 +11,6 @@ export class Heart {
   @Column()
   photoId: number = 0;
 
-  @Column('datetime')
-  datetime: Date = new Date();
+  @Column('timestamp')
+  timestamp: Date = new Date();
 }

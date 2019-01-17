@@ -22,4 +22,7 @@ export class Photo {
 
   @Column()
   lgUrl: string = '';
+
+  @Column('timestamp')
+  timestamp: Date = new Date();
 }

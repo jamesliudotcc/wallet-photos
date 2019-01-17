@@ -22,8 +22,12 @@ const STATIC_PHOTOS = '/photos/';
 // Connect Database through TypeORM
 
 createConnection({
-  type: 'sqlite',
-  database: './mydb.sqlite3',
+  type: 'postgres',
+  host: 'localhost',
+  username: 'postgres',
+  password: 'docker',
+  port: 5430,
+  database: 'walletphotos',
   entities: [Photo, User, Comment],
   synchronize: true,
   logging: false,

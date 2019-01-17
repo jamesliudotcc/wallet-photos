@@ -1,5 +1,11 @@
 extends ../layout.pug
 block content
   each photo in photos
-    img(src=photo.mdUrl)
+    article
+      img(src=photo.mdUrl)
+      form(action="heart" method="POST")
+        input(type="submit" value="<3")
+      form(action="comment" method="POST")
+        textarea(name="comment", cols="30", rows="4")
+        input(type="submit", value="Comment")
     hr

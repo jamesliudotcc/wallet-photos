@@ -47,7 +47,6 @@ createConnection({
     //              Middlewares
     ******************************************/
 
-    app.use(express.static('static'));
     app.use(
       bodyParser.urlencoded({
         extended: false,
@@ -59,6 +58,20 @@ createConnection({
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());
+
+    // Expose Auth routes before all other
+    // Middlewares run
+
+    app.use('/auth', require('./controllers/auth'));
+
+    // Refactor into Middlewares
+    app.use(function(req, res, next) {
+      if (!req.isAuthenticated()) {
+        return res.redirect('/auth/login');
+      }
+      next();
+    });
+    app.use(express.static('static'));
 
     /* ****************************************
     //              Routes
@@ -98,7 +111,6 @@ createConnection({
 
     // Include Controllers
     app.use('/photos', require('./controllers/photos'));
-    app.use('/auth', require('./controllers/auth'));
 
     /* ****************************************
     //              Listen

@@ -27,18 +27,21 @@ passport.use(
     async (email, password, callback) => {
       //Still need to create User model from entity
       console.log(email);
-
-      const foundUser = await getRepository(User).findOne({
-        where: { email: email },
-      });
-      if (!foundUser || !foundUser.validPassword(password)) {
-        // bad
-        console.log('bad credentials');
-        callback(null, null);
-      } else {
-        // good
-        console.log('good user');
-        callback(null, foundUser);
+      try {
+        const foundUser = await getRepository(User).findOne({
+          where: { email: email },
+        });
+        if (!foundUser || !foundUser.validPassword(password)) {
+          // bad
+          console.log('bad credentials');
+          callback(null, null);
+        } else {
+          // good
+          console.log('good user');
+          callback(null, foundUser);
+        }
+      } catch (callback) {
+        console.log(callback);
       }
     }
   )

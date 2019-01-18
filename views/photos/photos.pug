@@ -6,8 +6,14 @@ block content
       ul
         each comment in photo.comments
           li= comment.comment
-      form(action="/heart" method="POST")
-        input(type="submit" value="<3")
+      if photo.hearts > 0
+        =photo.hearts 
+        <3
+      unless photo.hideHeartButton == 'true'
+        form(action="/heart" method="POST")
+          input(type="hidden", name="userId" value=user.id)
+          input(type="hidden", name="photoId" value=photo.id)
+          input(type="submit" value="<3")
       form(action="/comment" method="POST")
         input(type="hidden", name="userId" value=user.id)
         input(type="hidden", name="photoId" value=photo.id)

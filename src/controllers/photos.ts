@@ -10,13 +10,13 @@ const userRepository = getRepository(User);
 const STATIC_PHOTOS = '/photos/';
 
 router.get('/', async (req, res) => {
-  let allPhotos = await photoRepository.find();
+  let allPhotos = await photoRepository.find({ order: { id: 'DESC' } });
+
   if (req.session) {
     let user = await userRepository.findOne(req.session.passport.user);
     res.render('photos/photos', {
       // This should live in a function ?
-      photos: [...allPhotos] // destructuring required for immutable
-        .reverse()
+      photos: allPhotos
         .filter(photo => {
           if (photo.smUrl) {
             return photo.smUrl;
@@ -27,10 +27,22 @@ router.get('/', async (req, res) => {
           mdUrl: STATIC_PHOTOS + photo.mdUrl,
           lgUrl: STATIC_PHOTOS + photo.lgUrl,
           id: photo.id,
-          comment: photo.comments,
+          comments: photo.comments,
+          hideHeartButton: photo.hearts
+            .map(heart => heart.user.id)
+            .filter(a => a === user.id)
+            .map(a => {
+              // Give a literal true to Pug
+              if (a === user.id) {
+                return true;
+              } else {
+                return false;
+              }
+            }),
+          hearts: photo.hearts.length,
         })),
       alerts: req.flash(),
-      //@ts-ignore
+
       user: { name: user.name, id: user.id },
     });
   } else {

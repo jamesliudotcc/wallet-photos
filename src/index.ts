@@ -12,6 +12,7 @@ import { createConnection } from 'typeorm';
 import { Photo } from './entity/Photo';
 import { User } from './entity/User';
 import { Comment } from './entity/Comment';
+import { Heart } from './entity/Heart';
 
 // End of upload required packages
 
@@ -28,7 +29,7 @@ createConnection({
   password: 'docker',
   port: 5430,
   database: 'walletphotos',
-  entities: [Photo, User, Comment],
+  entities: [Photo, User, Comment, Heart],
   synchronize: true,
   logging: false,
 })
@@ -84,6 +85,7 @@ createConnection({
     app.use('/photos', require('./controllers/photos'));
     app.use('/upload', require('./controllers/upload'));
     app.use('/comment', require('./controllers/comment'));
+    app.use('/heart', require('./controllers/heart'));
     /* ****************************************
     //              Listen
     ******************************************/

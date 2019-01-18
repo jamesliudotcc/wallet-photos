@@ -1,15 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from './User';
+import { Photo } from './Photo';
 
 @Entity()
 export class Heart {
   @PrimaryGeneratedColumn()
   id: number = 0;
 
-  @Column()
-  userId: number = 0;
+  @ManyToOne(type => User, user => user.hearts, { eager: true })
+  user: User;
 
-  @Column()
-  photoId: number = 0;
+  @ManyToOne(type => Photo, photo => photo.hearts)
+  photo: Photo;
 
   @Column('timestamp')
   timestamp: Date = new Date();

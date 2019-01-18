@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { User } from './User';
 import { Comment } from './Comment';
+import { Heart } from './Heart';
 
 @Entity()
 export class Photo {
@@ -36,4 +37,7 @@ export class Photo {
 
   @OneToMany(type => Comment, comment => comment.photo, { eager: true })
   comments: Comment[];
+
+  @OneToMany(type => Heart, heart => heart.photo, { eager: true })
+  hearts: Heart[];
 }

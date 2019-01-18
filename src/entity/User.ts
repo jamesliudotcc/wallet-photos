@@ -8,6 +8,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Photo } from './Photo';
 import { Comment } from './Comment';
+import { Heart } from './Heart';
 
 @Entity()
 export class User {
@@ -43,6 +44,9 @@ export class User {
 
   @OneToMany(type => Comment, comment => comment.user)
   comments: Comment[];
+
+  @OneToMany(type => Heart, heart => heart.user)
+  hearts: Heart[];
 
   @BeforeInsert()
   hashPassword() {

@@ -8,15 +8,26 @@ const userRepository = getRepository(User);
 
 router.get('/', async (req, res) => {
   let allUsers = await userRepository.find({ order: { id: 'ASC' } });
-  res.render('admin/admin', { users: allUsers, alerts: req.flash() });
+  // console.log(req.session.passport.user);
+
+  const currentUser = await userRepository.findOne({
+    where: { id: req.session.passport.user },
+  });
+
+  if (currentUser.admin) {
+    res.render('admin/admin', { users: allUsers, alerts: req.flash() });
+  } else {
+    req.flash('failure', 'Admin page is for admins only');
+    res.redirect('/photos');
+  }
 });
 
 router.post('/', async (req, res) => {
   let user = await userRepository.findOne(req.body.userId);
   if (req.body.admin) {
-    // Nice to have: Only allow deleting admin if
     user.admin = true;
   } else {
+    // Nice to have: Only allow deleting admin if > 1 admin
     user.admin = false;
   }
   if (req.body.contrib) {

@@ -16,10 +16,6 @@ import { Heart } from './entity/Heart';
 
 // End of upload required packages
 
-// Constants:
-
-// Connect Database through TypeORM
-
 createConnection({
   type: 'postgres',
   host: 'localhost',
@@ -78,12 +74,12 @@ createConnection({
     //              Routes
     ******************************************/
 
-    // Include Controllers
     app.use('/photos', require('./controllers/photos'));
     app.use('/upload', require('./controllers/upload'));
     app.use('/comment', require('./controllers/comment'));
     app.use('/heart', require('./controllers/heart'));
     app.use('/admin', require('./controllers/admin'));
+
     /* ****************************************
     //              Listen
     ******************************************/

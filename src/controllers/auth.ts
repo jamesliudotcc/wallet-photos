@@ -25,17 +25,14 @@ router.get('/logout', (req, res) => {
 router.post('/signup', async (req, res) => {
   if (req.body.password != req.body.password2) {
     req.flash('error', 'Passwords must match');
-    res.render('athu/signup', { previousData: req.body, alerts: req.flash() });
+    res.redirect('/');
   } else {
     const existingUser = await userRepository.findOne({
       email: req.body.email,
     });
     if (existingUser) {
       req.flash('error', 'Username already in use');
-      res.render('auth/signup', {
-        previousData: req.body,
-        alerts: req.flash(),
-      });
+      res.redirect('/');
     } else {
       let numberOfAdmins = await userRepository.count({
         where: { admin: true },
@@ -68,7 +65,7 @@ router.post('/signup', async (req, res) => {
       passport.authenticate('local', {
         successRedirect: '/photos',
         successFlash: 'Yay, you signed up!',
-        failureRedirect: '/auth/signup',
+        failureRedirect: '/',
         failureflash: 'Invalid Credentials',
       });
 
@@ -83,7 +80,7 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/photos',
     successFlash: 'Yay, login successful!',
-    failureRedirect: '/auth/login',
+    failureRedirect: '/',
     failureFlash: 'Invalid Credentials',
   })
 );

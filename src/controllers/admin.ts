@@ -24,11 +24,16 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   let user = await userRepository.findOne(req.body.userId);
+  let numberOfAdmins = await userRepository.count({ where: { admin: true } });
   if (req.body.admin) {
     user.admin = true;
   } else {
     // Nice to have: Only allow deleting admin if > 1 admin
-    user.admin = false;
+    if (numberOfAdmins > 1) {
+      user.admin = false;
+    } else {
+      req.flash('failure', "Can't unmake the only admin.");
+    }
   }
   if (req.body.contrib) {
     user.contrib = true;

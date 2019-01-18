@@ -10,6 +10,8 @@ const userRepository = getRepository(User);
 const STATIC_PHOTOS = '/photos/';
 
 router.get('/', async (req, res) => {
+  // res.send('Ok, you logged in');
+
   let allPhotos = await photoRepository.find({ order: { id: 'DESC' } });
 
   if (req.session) {

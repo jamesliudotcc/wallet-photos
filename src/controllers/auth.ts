@@ -38,7 +38,7 @@ router.post('/signup', async (req, res) => {
         where: { admin: true },
       });
 
-      const user = manager.create(User, {
+      const user = await manager.create(User, {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
@@ -61,13 +61,27 @@ router.post('/signup', async (req, res) => {
       // getEmails: false,
       // });
       req.flash('success', 'Yay good job, you signed up!');
-      //@ts-ignore
-      passport.authenticate('local', {
-        successRedirect: '/photos',
-        successFlash: 'Yay, you signed up!',
-        failureRedirect: '/',
-        failureflash: 'Invalid Credentials',
+
+      req.logIn(user, err => {
+        if (err) {
+          req.flash(
+            'failure',
+            'Something went wrong with signup, please try again.'
+          );
+          res.redirect('/');
+        } else {
+          console.log('Ok, here');
+          res.redirect('/photos');
+        }
       });
+
+      //@ts-ignore
+      // passport.authenticate('local', {
+      //   successRedirect: '/photos',
+      //   successFlash: 'Yay, you signed up!',
+      //   failureRedirect: '/',
+      //   failureflash: 'Invalid Credentials',
+      // });
 
       res.redirect('/photos');
     }

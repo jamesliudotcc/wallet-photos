@@ -22,7 +22,11 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.post('/signup', async (req, res) => {
+router.get('/pending', (req, res) => {
+  res.render('auth/pending', { previousData: null, alerts: req.flash() });
+});
+
+router.post('/signup', async (req, res, next) => {
   if (req.body.password != req.body.password2) {
     req.flash('error', 'Passwords must match');
     res.redirect('/');
@@ -48,18 +52,8 @@ router.post('/signup', async (req, res) => {
         approved: false,
         getEmails: false,
       });
-      manager.save(user);
+      await manager.save(user);
 
-      // await userRepository.insert({ //Keep this code to put into bug report
-      // name: req.body.name,
-      // email: req.body.email,
-      // password: req.body.password,
-      // admin: false,
-      // contrib: false,
-      // family: false,
-      // approved: false,
-      // getEmails: false,
-      // });
       req.flash('success', 'Yay good job, you signed up!');
 
       req.logIn(user, err => {
@@ -70,20 +64,15 @@ router.post('/signup', async (req, res) => {
           );
           res.redirect('/');
         } else {
-          console.log('Ok, here');
-          res.redirect('/photos');
+          //@ts-ignore
+          passport.authenticate('local', {
+            successRedirect: '/photos',
+            successFlash: 'Yay, login successful!',
+            failureRedirect: '/',
+            failureFlash: 'Invalid Credentials',
+          })(req, res, next);
         }
       });
-
-      //@ts-ignore
-      // passport.authenticate('local', {
-      //   successRedirect: '/photos',
-      //   successFlash: 'Yay, you signed up!',
-      //   failureRedirect: '/',
-      //   failureflash: 'Invalid Credentials',
-      // });
-
-      res.redirect('/photos');
     }
   }
 });

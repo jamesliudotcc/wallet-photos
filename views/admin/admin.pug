@@ -1,0 +1,44 @@
+extends ../layout.pug
+
+block content
+  h1 Admin
+  table
+    thead
+      tr
+        th Name
+        th Admin
+        th Contributor
+        th Can See Photos
+        th Gets Emails
+        th 
+    each user in users
+      tbody
+        tr
+          form(method="POST", action="/admin")
+            td
+              = user.name
+              input(type="hidden", name="userId", value=user.id)        
+            td
+              if user.admin == true
+                input(type="checkbox", name="admin" checked)
+              else
+                input(type="checkbox", name="admin")
+            td
+              if user.contrib == true
+                input(type="checkbox", name="contrib" checked)
+              else
+                input(type="checkbox", name="contrib")              
+            td
+              if user.approved == true
+                input(type="checkbox", name="approved" checked)
+              else
+                input(type="checkbox", name="approved")              
+            td
+              if user.getEmails == true
+                input(type="checkbox", name="getEmails" checked)
+              else
+                input(type="checkbox", name="getEmails")              
+            td
+              input(type="submit", value="Change User")
+
+        

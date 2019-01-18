@@ -60,6 +60,14 @@ router.post('/signup', async (req, res) => {
       // getEmails: false,
       // });
       req.flash('success', 'Yay good job, you signed up!');
+      //@ts-ignore
+      passport.authenticate('local', {
+        successRedirect: '/photos',
+        successFlash: 'Yay, you signed up!',
+        failureRedirect: '/auth/signup',
+        failureflash: 'Invalid Credentials',
+      });
+
       res.redirect('/photos');
     }
   }

@@ -86,6 +86,7 @@ createConnection({
     app.use('/upload', require('./controllers/upload'));
     app.use('/comment', require('./controllers/comment'));
     app.use('/heart', require('./controllers/heart'));
+    app.use('/admin', require('./controllers/admin'));
     /* ****************************************
     //              Listen
     ******************************************/

@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
     let user = await userRepository.findOne(req.session.passport.user);
     res.render('upload/upload', {
       alerts: req.flash(),
-      //@ts-ignore
       user: { name: user.name, id: user.id },
     });
   }
@@ -28,7 +27,6 @@ router.post('/', upload.single('file'), async (req, res) => {
   }
   if (req.session) {
     let user = await userRepository.findOneOrFail(req.session.passport.user);
-    //@ts-ignore
     await updateModelWithPhoto(req, user);
   }
 
@@ -36,10 +34,8 @@ router.post('/', upload.single('file'), async (req, res) => {
   // Goes to upload instead of photos to give image processing a chance
 });
 
-//@ts-ignore
-async function updateModelWithPhoto(req: Request, user) {
+async function updateModelWithPhoto(req, user) {
   let photo = new Photo();
-  //@ts-ignore
   photo.origUrl = req.file.path;
   let newSavedPhoto = await photoRepository.save(photo);
   let photoToUpdate = await photoRepository.findOne(newSavedPhoto.id);
@@ -51,7 +47,6 @@ async function updateModelWithPhoto(req: Request, user) {
     await photoRepository.save(photoToUpdate);
   } // See if this can be re-written using try-catch?
   // Fix async behavior where return happens before update.
-  //@ts-ignore
   await createSizes(req.file.path, String(photo.id));
 }
 

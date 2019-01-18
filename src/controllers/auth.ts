@@ -37,11 +37,15 @@ router.post('/signup', async (req, res) => {
         alerts: req.flash(),
       });
     } else {
+      let numberOfAdmins = await userRepository.count({
+        where: { admin: true },
+      });
+
       const user = manager.create(User, {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        admin: false,
+        admin: numberOfAdmins ? false : true,
         contrib: false,
         family: false,
         approved: false,

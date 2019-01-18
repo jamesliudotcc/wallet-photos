@@ -18,8 +18,6 @@ import { Heart } from './entity/Heart';
 
 // Constants:
 
-const STATIC_PHOTOS = '/photos/';
-
 // Connect Database through TypeORM
 
 createConnection({
@@ -61,13 +59,16 @@ createConnection({
 
     // Expose Auth routes before all other
     // Middlewares run
+    app.get('/', (req, res) => {
+      res.render('home', { alerts: req.flash() });
+    });
 
     app.use('/auth', require('./controllers/auth'));
 
     // Refactor into Middlewares
     app.use(function(req, res, next) {
       if (!req.isAuthenticated()) {
-        return res.redirect('/auth/login');
+        return res.redirect('/');
       }
       next();
     });
@@ -76,10 +77,6 @@ createConnection({
     /* ****************************************
     //              Routes
     ******************************************/
-
-    app.get('/', (req, res) => {
-      res.send('OK');
-    });
 
     // Include Controllers
     app.use('/photos', require('./controllers/photos'));

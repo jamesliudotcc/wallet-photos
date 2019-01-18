@@ -25,7 +25,7 @@ router.get('/logout', (req, res) => {
 router.post('/signup', async (req, res) => {
   if (req.body.password != req.body.password2) {
     req.flash('error', 'Passwords must match');
-    res.render('auth/signup', { previousData: req.body, alerts: req.flash() });
+    res.render('athu/signup', { previousData: req.body, alerts: req.flash() });
   } else {
     const existingUser = await userRepository.findOne({
       email: req.body.email,

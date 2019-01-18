@@ -1,0 +1,26 @@
+extends ./layout.pug
+
+block content
+  h1 Login
+  form(method="POST", action="/auth/login")
+    p Email
+      input(type="email", name="email" id="email"  value=previousData ? previousData.email : '')
+    p Password
+      input(type="password" name="password" id="password")
+    p
+      input(type="submit" value="Submit")
+
+  hr
+
+  h1 Signup
+  form(method="POST", action="/auth/signup")
+    p Name
+      input(type="text" name="name" id="name" value=previousData ? previousData.name : '')    
+    p Email
+      input(type="email", name="email" id="email"  value=previousData ? previousData.email : '')
+    p Password
+      input(type="password" name="password" id="password")
+    p Retype Password
+      input(type="password" name="password2" id="password2")
+    p
+      input(type="submit" value="Submit")

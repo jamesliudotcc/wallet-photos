@@ -59,7 +59,7 @@ router.post('/signup', async (req, res, next) => {
       req.logIn(user, err => {
         if (err) {
           req.flash(
-            'failure',
+            'error',
             'Something went wrong with signup, please try again.'
           );
           res.redirect('/');

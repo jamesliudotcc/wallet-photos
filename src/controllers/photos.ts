@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
   let allPhotos = await photoRepository.find({ order: { id: 'DESC' } });
 
   if (req.session) {
-    let user = await userRepository.findOne(req.session.passport.user);
+    const user = await userRepository.findOne(req.session.passport.user);
     res.render('photos/photos', {
       // This should live in a function ?
       photos: allPhotos
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
         })),
       alerts: req.flash(),
 
-      user: { name: user.name, id: user.id },
+      user: { password: '', ...user },
     });
   } else {
     // throw error;

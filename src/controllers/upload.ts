@@ -14,10 +14,15 @@ const upload = multer({ dest: 'uploads/' });
 router.get('/', async (req, res) => {
   if (req.session) {
     let user = await userRepository.findOne(req.session.passport.user);
-    res.render('upload/upload', {
-      alerts: req.flash(),
-      user: { name: user.name, id: user.id },
-    });
+    if (user.contrib) {
+      res.render('upload/upload', {
+        alerts: req.flash(),
+        user: { password: '', ...user },
+      });
+    } else {
+      req.flash('error', 'Not approved to add photos');
+      res.redirect('/photos');
+    }
   }
 });
 

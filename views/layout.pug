@@ -6,22 +6,21 @@ html
 
   body
     nav
-      a(href='/') Site
       ul
         if user
           li
             =`Hello, ${user.name}`
           li
             a(href="/auth/logout") Logout
-          li
-            a(href="/upload") Upload
-          li
-            a(href="/photos") Photos
-        else
-          li
-            a(href="/auth/login") Login
-          li
-            a(href="/auth/signup") Sign Up
+          if user.contrib == true
+            li
+              a(href="/upload") Upload
+          if user.approved == true            
+            li
+              a(href="/photos") Photos
+          if user.admin == true
+            li
+              a(href="/admin") Admin
 
     .container
       include includes/alerts.pug

@@ -7,17 +7,21 @@ const router = express.Router();
 const userRepository = getRepository(User);
 
 router.get('/', async (req, res) => {
-  let allUsers = await userRepository.find({ order: { id: 'ASC' } });
-  // console.log(req.session.passport.user);
+  const user = await userRepository.findOne(req.session.passport.user);
+  const allUsers = await userRepository.find({ order: { id: 'ASC' } });
 
   const currentUser = await userRepository.findOne({
     where: { id: req.session.passport.user },
   });
 
   if (currentUser.admin) {
-    res.render('admin/admin', { users: allUsers, alerts: req.flash() });
+    res.render('admin/admin', {
+      users: allUsers,
+      user: { password: '', ...user },
+      alerts: req.flash(),
+    });
   } else {
-    req.flash('failure', 'Admin page is for admins only');
+    req.flash('error', 'Admin page is for admins only');
     res.redirect('/photos');
   }
 });
@@ -32,7 +36,7 @@ router.post('/', async (req, res) => {
     if (numberOfAdmins > 1) {
       user.admin = false;
     } else {
-      req.flash('failure', "Can't unmake the only admin.");
+      req.flash('error', "Can't unmake the only admin.");
     }
   }
   if (req.body.contrib) {

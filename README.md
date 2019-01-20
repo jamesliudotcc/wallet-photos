@@ -78,3 +78,15 @@ W + Th: MVP: All functionality + basic styling
 ### Sprint 3
 
 F + Second weekend: Finish, README, stretch goals
+
+Deployment
+
+I ran into some difficulties deploying the app to the internet. For whatever reason, the Typescript compiler on the server did not accept the //@ts-ignore directive for two lines of authentication code. So I decided to push a compiled JS version to the server instead, which ran into its own set of problems. 
+
+Node would not run my app because it couldn't find the binding files for sharp, the library which handles my image processing. The way to fix that was apparently to uninstall and reinstall the package. Even though I had literally just installed by specifying it in my package.json. 
+
+Also, the latest version of bcrypt is not available as a compiled library yet, apparently, so instead of configuring the C compilation environment on my server, I chose to specify a slightly older version of Bcrypt.
+
+Other than those three problems, deployment was fine, if non-trivial. I chose to use Digital Ocean instead of Heroku because I don't mind paying some money to have my own virtual machine in the cloud. The idea of the app is that I pay my own way to host baby pictures so that I am in control. I have some credits from podcasts, so I am not paying yet. I found [this guide](https://codeburst.io/ricky-figures-it-out-devops-deployment-using-express-postgres-and-digital-ocean-15c2d961340e) helpful for setting up my Postgres instance, and the [official guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04) to deploying Node apps to an NGINX reverse proxy was clearly explained and easy to follow.
+
+It is not as if deploying to Heroku was a trivial affair either.

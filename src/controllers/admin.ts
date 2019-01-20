@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import { User } from '../entity/User';
 
 const router = express.Router();
@@ -32,7 +32,6 @@ router.post('/', async (req, res) => {
   if (req.body.admin) {
     user.admin = true;
   } else {
-    // Nice to have: Only allow deleting admin if > 1 admin
     if (numberOfAdmins > 1) {
       user.admin = false;
     } else {
@@ -57,4 +56,21 @@ router.post('/', async (req, res) => {
   await userRepository.save(user);
   res.redirect('/admin');
 });
+
+router.delete('/:idx', async (req, res) => {
+  try {
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(User)
+      .where('id = :id', { id: req.params.idx })
+      .execute();
+
+    await res.redirect('/admin');
+  } catch {
+    req.flash('error', "Can't delete that user. Sorry");
+    res.redirect('/admin');
+  }
+});
+
 module.exports = router;

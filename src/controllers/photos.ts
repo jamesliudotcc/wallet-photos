@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import { Photo } from '../entity/Photo';
 import { User } from '../entity/User';
 
@@ -52,8 +52,25 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:idx', (req, res) => {
-  res.send(`Got to photo number ${req.params.idx}`);
+router.delete('/:idx', async (req, res) => {
+  try {
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Photo)
+      .where('id = :id', { id: req.params.idx })
+      .execute();
+
+    await res.redirect('/photos');
+  } catch {
+    req.flash(
+      'error',
+      "Can't delete a photo someone commented on or hearted. This feature is coming soon. Sorry."
+    );
+    res.redirect('/photos');
+  }
+
+  res.send(`Delete photo number ${req.params.idx}`);
 });
 
 module.exports = router;

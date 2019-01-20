@@ -2,6 +2,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 const flash = require('connect-flash');
+import * as methodOverride from 'method-override';
 const passport = require('./config/passportConfig');
 import * as session from 'express-session';
 require('dotenv').config();
@@ -52,6 +53,7 @@ createConnection({
     app.use(flash());
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(methodOverride('_method'));
 
     // Expose Auth routes before all other
     // Middlewares run

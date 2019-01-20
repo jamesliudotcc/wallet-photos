@@ -7,32 +7,36 @@ const router = express.Router();
 const userRepository = getRepository(User);
 
 router.get('/', async (req, res) => {
-  const user = await userRepository.findOne(req.session.passport.user);
-  const allUsers = await userRepository.find({ order: { id: 'ASC' } });
+  try {
+    const user = await userRepository.findOne(req.session.passport.user);
+    const allUsers = await userRepository.find({ order: { id: 'ASC' } });
 
-  const currentUser = await userRepository.findOne({
-    where: { id: req.session.passport.user },
-  });
-
-  if (currentUser.admin) {
-    res.render('admin/admin', {
-      users: allUsers,
-      user: { password: '', ...user },
-      alerts: req.flash(),
+    const currentUser = await userRepository.findOne({
+      where: { id: req.session.passport.user },
     });
-  } else {
-    req.flash('error', 'Admin page is for admins only');
-    res.redirect('/photos');
+
+    if (currentUser.admin) {
+      res.render('admin/admin', {
+        users: allUsers,
+        user: { password: '', ...user },
+        alerts: req.flash(),
+      });
+    } else {
+      req.flash('error', 'Admin page is for admins only');
+      res.redirect('/photos');
+    }
+  } catch {
+    console.log('Unauthorized user at Admin');
   }
 });
 
-router.post('/', async (req, res) => {
-  let user = await userRepository.findOne(req.body.userId);
+router.put('/:idx', async (req, res) => {
+  let user = await userRepository.findOne(req.params.idx);
   let numberOfAdmins = await userRepository.count({ where: { admin: true } });
   if (req.body.admin) {
     user.admin = true;
   } else {
-    if (numberOfAdmins > 1) {
+    if (numberOfAdmins > 1 || user.admin === false) {
       user.admin = false;
     } else {
       req.flash('error', "Can't unmake the only admin.");

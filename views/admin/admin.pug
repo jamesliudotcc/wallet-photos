@@ -11,7 +11,7 @@ block content
             form(method="POST" action=`/admin/${user.id}?_method=DELETE`)
               input(type="submit", value="🗑️")
         .pa3.bt
-          form(method="POST", action="/admin")
+          form(method="POST", action=`/admin/${user.id}?_method=PUT`)
             p.lh-copy.measure.mv0= user.email
             input(type="hidden", name="userId", value=user.id) 
             p.lh-copy.measure.mv0

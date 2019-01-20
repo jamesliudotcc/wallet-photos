@@ -73,5 +73,4 @@ async function createSizes(imagePath: string, imageNumber: string) {
       });
   });
 }
-
 module.exports = router;

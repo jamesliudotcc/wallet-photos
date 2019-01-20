@@ -74,17 +74,12 @@ router.post('/signup', async (req, res, next) => {
   });
   await manager.save(user);
 
-  req.flash('success', 'Yay good job, you signed up!');
-
   req.logIn(user, err => {
-    if (err) {
-      req.flash('error', 'Something went wrong with signup, please try again.');
-      res.redirect('/');
-    } else {
+    {
       //@ts-ignore
       passport.authenticate('local', {
         successRedirect: '/auth/pending',
-        successFlash: 'Yay, login successful!',
+        successFlash: 'You signed up!',
         failureRedirect: '/',
         failureFlash: 'Invalid Credentials',
       })(req, res, next);

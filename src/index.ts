@@ -20,9 +20,9 @@ import { Heart } from './entity/Heart';
 createConnection({
   type: 'postgres',
   host: 'localhost',
-  username: 'postgres',
-  password: 'docker',
-  port: 5430,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  port: Number(process.env.POSTGRES_PORT),
   database: 'walletphotos',
   entities: [Photo, User, Comment, Heart],
   synchronize: true,
@@ -48,7 +48,11 @@ createConnection({
       })
     );
     app.use(
-      session({ secret: 'Secret', resave: false, saveUninitialized: true })
+      session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+      })
     );
     app.use(flash());
     app.use(passport.initialize());
@@ -63,10 +67,10 @@ createConnection({
 
     app.use('/auth', require('./controllers/auth'));
 
-    // Refactor into Middlewares
     app.use(function(req, res, next) {
       if (!req.isAuthenticated()) {
-        return res.redirect('/');
+        req.flash('error', 'Please log in or sign up.');
+        res.redirect('/');
       }
       next();
     });

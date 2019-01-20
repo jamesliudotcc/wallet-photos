@@ -1,6 +1,10 @@
 {
   "name": "project",
   "version": "1.0.0",
+  "repository": {
+    "type": "Github",
+    "url": "https://github.com/jamesliudotcc/wallet-photos"
+  },
   "description": "A privacy-first photo sharing app for slightly paranoid parents",
   "main": "index.js",
   "scripts": {
@@ -28,7 +32,7 @@
     "reflect-metadata": "^0.1.10",
     "request": "^2.88.0",
     "sequelize": "^4.42.0",
-    "sharp": "^0.21.2",
+    "sharp": "0.21.2",
     "typeorm": "0.2.11",
     "typescript": "3.2.2",
     "validator": "^10.11.0"

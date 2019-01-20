@@ -6,21 +6,21 @@ html
 
   body.athelas
     header
-      nav
-        ul.pl0
+      nav.dt.w-100.border-box.pa3.ph5-ns
+        ul.pl0.dtc.v-mid.w-75.tr
           if user
-            li
+            li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
               =`Hello, ${user.name}`
-            li
+            li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
               a(href="/auth/logout") Logout
             if user.contrib == true
-              li
+              li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
                 a(href="/upload") Upload
             if user.approved == true            
-              li
+              li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
                 a(href="/photos") Photos
             if user.admin == true
-              li
+              li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
                 a(href="/admin") Admin
     main
       .container

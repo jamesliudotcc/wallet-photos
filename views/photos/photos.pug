@@ -3,24 +3,33 @@ block content
   each photo in photos
     article
       img(src=photo.smUrl, srcset=`${photo.smUrl} 512w, ${photo.mdUrl} 1024w, ${photo.lgUrl} 2048w`, sizes="(max-width:500px) 100vw, (max-width:1000px) 100vw,")
-      ul
+
+      form(action="/heart" method="POST")
+        input(type="hidden", name="userId" value=user.id)
+        input(type="hidden", name="photoId" value=photo.id)
+        input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit" value="♡")
+        if photo.hearts == 1
+          ='1 ♡'
+        if photo.hearts > 1
+          =photo.hearts 
+          ='♡s'
+      ul.pl0
         each comment in photo.comments
-          li= comment.user.name
-          =comment.comment
-      if photo.hearts > 0
-        =photo.hearts 
-        <3
-      unless photo.hideHeartButton == 'true'
-        form(action="/heart" method="POST")
-          input(type="hidden", name="userId" value=user.id)
-          input(type="hidden", name="photoId" value=photo.id)
-          input(type="submit" value="<3")
+          li
+            strong
+              = comment.user.name
+            span : 
+            = comment.comment
       form(action="/comment" method="POST")
         input(type="hidden", name="userId" value=user.id)
         input(type="hidden", name="photoId" value=photo.id)
         textarea(name="comment", cols="30", rows="4")
-        input(type="submit", value="Comment")
+        div
+          input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="Comment")
+        div
+          unless photo.hideHeartButton == 'true'
+
       if user.admin == true
         form(action=`/photos/${photo.id}?_method=DELETE` method="POST")
-          input(type="submit", value="🗑️")
+          input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="🗑️")
     hr

@@ -7,7 +7,7 @@ export class Comment {
   @PrimaryGeneratedColumn()
   id: number = 0;
 
-  @ManyToOne(type => User, user => user.comments)
+  @ManyToOne(type => User, user => user.comments, { eager: true })
   user: User;
 
   @ManyToOne(type => Photo, photo => photo.comments)

@@ -5,7 +5,8 @@ block content
       img(src=photo.smUrl, srcset=`${photo.smUrl} 512w, ${photo.mdUrl} 1024w, ${photo.lgUrl} 2048w`, sizes="(max-width:500px) 100vw, (max-width:1000px) 100vw,")
       ul
         each comment in photo.comments
-          li= comment.comment
+          li= comment.user.name
+          =comment.comment
       if photo.hearts > 0
         =photo.hearts 
         <3

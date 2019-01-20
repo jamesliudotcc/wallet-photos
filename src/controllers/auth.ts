@@ -28,6 +28,8 @@ router.get('/pending', (req, res) => {
 });
 
 router.post('/signup', async (req, res, next) => {
+  //Some validations
+
   if (req.body.password != req.body.password2) {
     req.flash('error', 'Passwords must match');
     res.redirect('/');
@@ -36,11 +38,19 @@ router.post('/signup', async (req, res, next) => {
   const existingUser = await userRepository.findOne({
     email: req.body.email,
   });
+  if (!validator.isEmail(req.body.email)) {
+    req.flash('error', 'Email is not valid, please try again');
+    res.redirect('/');
+    return;
+  }
   if (existingUser) {
     req.flash('error', 'Email already in use');
     res.redirect('/');
     return;
   }
+
+  // Counts number of a class of user, to make sure
+  // initial users are given right permissions
 
   let numberOfAdmins = await userRepository.count({
     where: { admin: true },
@@ -73,7 +83,7 @@ router.post('/signup', async (req, res, next) => {
     } else {
       //@ts-ignore
       passport.authenticate('local', {
-        successRedirect: '/photos',
+        successRedirect: '/auth/pending',
         successFlash: 'Yay, login successful!',
         failureRedirect: '/',
         failureFlash: 'Invalid Credentials',

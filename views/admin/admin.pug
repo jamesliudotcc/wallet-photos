@@ -1,44 +1,38 @@
 extends ../layout.pug
 
 block content
-  h1 Admin
-  table
-    thead
-      tr
-        th Name
-        th Admin
-        th Contributor
-        th Can See Photos
-        th Gets Emails
-        th 
-    each user in users
-      tbody
-        tr
-          form(method="POST", action="/admin")
-            td
-              = user.name
-              input(type="hidden", name="userId", value=user.id)        
-            td
-              if user.admin == true
-                input(type="checkbox", name="admin" checked)
-              else
-                input(type="checkbox", name="admin")
-            td
-              if user.contrib == true
-                input(type="checkbox", name="contrib" checked)
-              else
-                input(type="checkbox", name="contrib")              
-            td
-              if user.approved == true
-                input(type="checkbox", name="approved" checked)
-              else
-                input(type="checkbox", name="approved")              
-            td
-              if user.getEmails == true
-                input(type="checkbox", name="getEmails" checked)
-              else
-                input(type="checkbox", name="getEmails")              
-            td
-              input(type="submit", value="Change User")
 
-        
+  each user in users
+    .w-100.w-third-ns.hidden.pa3
+      article.ba
+        h1.f4.mv0.pv2.ph3
+          = user.name 
+          from(method="POST" action="/admin/")
+          input.ml3(type="submit", value="🗑️")
+        .pa3.bt
+          form(method="POST", action="/admin")
+            p.lh-copy.measure.mv0= user.email
+            input(type="hidden", name="userId", value=user.id) 
+            p.lh-copy.measure.mv0
+              label
+                if user.admin == true
+                  input(type="checkbox", id="admin" name="admin" checked)
+                else
+                  input(type="checkbox", id="admin" name="admin")
+                span  Admin
+            p.lh-copy.measure.mv0
+              label
+                if user.contrib == true
+                  input(type="checkbox", id="contrib" name="contrib" checked)
+                else
+                  input(type="checkbox", id="contrib" name="contrib")
+                span  Can post photos
+            p.lh-copy.measure.mv0
+              label
+                if user.approved == true
+                  input(type="checkbox", id="approved" name="approved" checked)
+                else
+                  input(type="checkbox", id="approved" name="approved")
+                span  Can see photos
+            input.mv1(type="submit", value="✏️ Edit User")
+          

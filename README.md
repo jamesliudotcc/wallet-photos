@@ -59,6 +59,10 @@ Tachyons gives me a declarative syntax and a set of components that is easy to d
 
 Sharp is a performant image library with clear [documentation](http://sharp.pixelplumbing.com/en/v0.17.0/). I use it to parse incoming jpegs into smaller file sizes.
 
+#### Dropzone
+
+This creates an area for the 
+
 ## Routes
 
 | Route         | HTTP Verb | Description                                                  |
@@ -101,4 +105,3 @@ It is not as if deploying to Heroku was a trivial affair either.
 
 ## What's Next
 
-I want to get multiple uploads working. Styling could be better.

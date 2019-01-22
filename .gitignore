@@ -5,5 +5,5 @@ build/
 tmp/
 temp/
 .env
-/static/photos
-/uploads
+static/photos/
+uploads/

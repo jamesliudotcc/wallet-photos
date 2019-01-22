@@ -61,7 +61,7 @@ Sharp is a performant image library with clear [documentation](http://sharp.pixe
 
 #### Dropzone
 
-This creates an area for the 
+This creates an area for dragging and dropping photos, or you click it to bring up an upload dialog. It works really well. It is also 81% of "my" code.
 
 ## Routes
 
@@ -83,7 +83,9 @@ This creates an area for the
 | /comment/     | POST      | The incoming message says who said what to what photograph.  |
 | /heart/       | POST      | The incoming message says who liked what photograph. I was kind of tempted to allow unlimited hearts so that, even given a limited user-base, parents would get a lot of love just by people clicking the button over and over again. But I decided to implement a saner version where each user has liked a photo, or not, only once. But no take-backs. |
 
+### Styling
 
+I wanted the photos to span the whole width of the viewport unless it got very big. The text needed to have some margins at all but the smallest sizes. I made the text line up with itself, and then with the photos in the smallest and the largest size. I thought this was a good compromise. 
 
 ### Sprints
 
@@ -105,3 +107,7 @@ It is not as if deploying to Heroku was a trivial affair either.
 
 ## What's Next
 
+- Pagination. It shouldn't be too hard, I just have to sit down and do it.
+- Styling. Maybe more like cards for the photos and comments.
+- Better admin controls. Delete comments. Delete users even with comments.
+- Email subscriptions. Users can opt into a digest email of photos.

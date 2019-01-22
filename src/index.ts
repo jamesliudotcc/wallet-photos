@@ -29,7 +29,8 @@ createConnection({
   logging: false,
 })
   .then(async connection => {
-    let photoRepository = connection.getRepository(Photo);
+    const photoRepository = connection.getRepository(Photo);
+    const userRepository = connection.getRepository(User);
 
     /* ****************************************
     //              Initialize App
@@ -62,18 +63,33 @@ createConnection({
     // Expose Auth routes before all other
     // Middlewares run
     app.get('/', (req, res) => {
+      req.logout();
       res.render('home', { alerts: req.flash() });
     });
 
     app.use('/auth', require('./controllers/auth'));
 
-    app.use(function(req, res, next) {
-      if (!req.isAuthenticated()) {
+    app.use(function isUserAuthenticated(req, res, next) {
+      if (req.isUnauthenticated()) {
         req.flash('error', 'Please log in or sign up.');
         res.redirect('/');
       }
       next();
     });
+
+    app.use(async function isUserApproved(req, res, next) {
+      try {
+        const user = await userRepository.findOne(req.session.passport.user);
+        if (!user.approved && req.path !== '/') {
+          req.flash('error', 'Pending approval. Nothing to see here yet.');
+          res.redirect('/auth/pending');
+        }
+        next();
+      } catch {
+        console.log('Something went wrong.');
+      }
+    });
+
     app.use(express.static('static'));
 
     /* ****************************************

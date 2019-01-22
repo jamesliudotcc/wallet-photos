@@ -1,27 +1,23 @@
 doctype html
 html
   head
-    title Wallet Photos
+    title JamesBridgetPenelope
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css")
 
-  body.athelas
-    header
-      nav.dt.w-100.border-box.pa3.ph5-ns
-        ul.pl0.dtc.v-mid.w-75.tr
-          if user
-            li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
-              =`Hello, ${user.name}`
-            li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
-              a(href="/auth/logout") Logout
-            if user.contrib == true
-              li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
-                a(href="/upload") Upload
-            if user.approved == true            
-              li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
-                a(href="/photos") Photos
-            if user.admin == true
-              li.link.dim.dark-gray.f6.f5-ns.dib.mr3.mr4-ns
-                a(href="/admin") Admin
+  body.avenir
+    nav.pt3.pt4-ns.pb3.pb4-ns
+      .db.dtc-ns.v-mid.tl.w-50-ns.pr5
+        a.link.dim.black.b.f6.f5-ns-dib-mr4(href="#" title="Home")
+          =`JamesBridgetPenelope `
+      if user
+        .db.dtc-ns.v-mid.w-100.w-50-ns.tl.tr-ns.mt2.mt0-ns.tr
+          if user.admin == true 
+            a.link.dim.gray.f6.f5-ns.dib.mr3(href="/admin") Admin
+          if user.contrib == true 
+            a.link.dim.gray.f6.f5-ns.dib.mr3(href="/upload") Upload
+          if user.approved == true             
+            a.link.dim.gray.f6.f5-ns.dib.mr3(href="/photos") Photos 
+          a.link.dim.gray.f6.f5-ns.dib.mr3(href="/auth/logout") Logout                
     main
       .container
         include includes/alerts.pug

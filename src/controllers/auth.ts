@@ -23,8 +23,16 @@ router.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/pending', (req, res) => {
-  res.render('auth/pending', { previousData: null, alerts: req.flash() });
+router.get('/pending', async (req, res) => {
+  const user = await userRepository.findOne(req.session.passport.user);
+  if (await user.approved) {
+    res.redirect('/photos');
+  } else {
+    res.render('auth/pending', {
+      alerts: req.flash(),
+      user: { password: '', ...user },
+    });
+  }
 });
 
 router.post('/signup', async (req, res, next) => {
@@ -91,7 +99,7 @@ router.post(
   '/login',
   //@ts-ignore
   passport.authenticate('local', {
-    successRedirect: '/photos',
+    successRedirect: '/auth/pending',
     successFlash: 'Yay, login successful!',
     failureRedirect: '/',
     failureFlash: 'Invalid Credentials',

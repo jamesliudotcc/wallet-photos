@@ -9,14 +9,6 @@ const router = express.Router();
 const userRepository = getRepository(User);
 const manager = getManager();
 
-router.get('/signup', (req, res) => {
-  res.render('auth/signup', { previousData: null, alerts: req.flash() });
-});
-
-router.get('/login', (req, res) => {
-  res.render('auth/login', { alerts: req.flash() });
-});
-
 router.get('/logout', (req, res) => {
   req.logout();
   req.flash('success', 'You logged out. Bye!');

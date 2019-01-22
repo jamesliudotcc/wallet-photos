@@ -2,7 +2,8 @@ extends ../layout.pug
 
 block content
 
-  h1 Upload example
-  form#upload(method="POST" action="/upload" enctype="multipart/form-data")
-    input(name="file" type="file")
-    input(type="submit" value="Submit")
+  form.ba.bw2.b--dashed.pv7.mh3-m.mh6-l.dropzone.tc#upload(method="POST" action="/upload" enctype="multipart/form-data")
+    .fallback
+      input(name="file" type="file")
+      input(type="submit" value="Submit")
+  script(src="/dropzone.js")

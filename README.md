@@ -55,7 +55,7 @@ Tachyons gives me a declarative syntax and a set of components that is easy to d
 
 <div>Icons made by <a href="https://www.flaticon.com/authors/dinosoftlabs" title="DinosoftLabs">DinosoftLabs</a> from <a href="https://www.flaticon.com/" 			    title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" 			    title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
 
-Sharp
+#### Sharp
 
 Sharp is a performant image library with clear [documentation](http://sharp.pixelplumbing.com/en/v0.17.0/). I use it to parse incoming jpegs into smaller file sizes.
 

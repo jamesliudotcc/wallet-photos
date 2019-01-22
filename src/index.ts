@@ -15,6 +15,10 @@ import { User } from './entity/User';
 import { Comment } from './entity/Comment';
 import { Heart } from './entity/Heart';
 
+// Import my middlewares
+
+const isUserAuthenticated = require('./middleware/isUserAuthenticated');
+
 // End of upload required packages
 
 createConnection({
@@ -29,7 +33,6 @@ createConnection({
   logging: false,
 })
   .then(async connection => {
-    const photoRepository = connection.getRepository(Photo);
     const userRepository = connection.getRepository(User);
 
     /* ****************************************
@@ -62,6 +65,7 @@ createConnection({
 
     // Expose Auth routes before all other
     // Middlewares run
+
     app.get('/', (req, res) => {
       req.logout();
       res.render('home', { alerts: req.flash() });
@@ -69,32 +73,27 @@ createConnection({
 
     app.use('/auth', require('./controllers/auth'));
 
-    app.use(function isUserAuthenticated(req, res, next) {
-      if (req.isUnauthenticated()) {
-        req.flash('error', 'Please log in or sign up.');
-        res.redirect('/');
-      }
-      next();
-    });
+    app.use(isUserAuthenticated);
 
-    app.use(async function isUserApproved(req, res, next) {
+    app.use(async (req, res, next) => {
       try {
         const user = await userRepository.findOne(req.session.passport.user);
         if (!user.approved && req.path !== '/') {
           req.flash('error', 'Pending approval. Nothing to see here yet.');
           res.redirect('/auth/pending');
+        } else {
+          next();
         }
-        next();
-      } catch {
-        console.log('Something went wrong.');
+      } catch (err) {
+        console.log('Something went wrong with user approval middleware.');
       }
     });
-
-    app.use(express.static('static'));
 
     /* ****************************************
     //              Routes
     ******************************************/
+
+    app.use(express.static('static'));
 
     app.use('/photos', require('./controllers/photos'));
     app.use('/upload', require('./controllers/upload'));

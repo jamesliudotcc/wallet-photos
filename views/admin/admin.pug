@@ -1,39 +1,43 @@
 extends ../layout.pug
 
 block content
-
-  each user in users
-    .w-100.w-third-ns.hidden.pa3
-      article.ba
-        h1.f4.mv0.pv2.ph3
-          = user.name
+  div
+    form(method="POST", action=`/admin/?_method=PUT`)
+      input.ma3.mv1.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="Approve all users")
+    
+  div
+    each user in users
+      .fl.w-100.w-third-ns.hidden.pa3
+        article.ba
+          h1.dib.f4.mv0.pv2.ph3.mt3
+            = user.name
           unless user.admin == true
-            form(method="POST" action=`/admin/${user.id}?_method=DELETE`)
-              input(type="submit", value="🗑️")
-        .pa3.bt
-          form(method="POST", action=`/admin/${user.id}?_method=PUT`)
-            p.lh-copy.measure.mv0= user.email
-            input(type="hidden", name="userId", value=user.id) 
-            p.lh-copy.measure.mv0
-              label
-                if user.admin == true
-                  input(type="checkbox", id="admin" name="admin" checked)
-                else
-                  input(type="checkbox", id="admin" name="admin")
-                span  Admin
-            p.lh-copy.measure.mv0
-              label
-                if user.contrib == true
-                  input(type="checkbox", id="contrib" name="contrib" checked)
-                else
-                  input(type="checkbox", id="contrib" name="contrib")
-                span  Can post photos
-            p.lh-copy.measure.mv0
-              label
-                if user.approved == true
-                  input(type="checkbox", id="approved" name="approved" checked)
-                else
-                  input(type="checkbox", id="approved" name="approved")
-                span  Can see photos
-            input.mv1(type="submit", value="✏️ Edit User")
-          
+            form.dib.ph3(method="POST" action=`/admin/${user.id}?_method=DELETE`)
+              input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="🗑️")
+          .pa3.bt
+            form(method="POST", action=`/admin/${user.id}?_method=PUT`)
+              p.lh-copy.measure.mv0= user.email
+              input(type="hidden", name="userId", value=user.id) 
+              p.lh-copy.measure.mv0
+                label
+                  if user.admin == true
+                    input(type="checkbox", id="admin" name="admin" checked)
+                  else
+                    input(type="checkbox", id="admin" name="admin")
+                  span  Admin
+              p.lh-copy.measure.mv0
+                label
+                  if user.contrib == true
+                    input(type="checkbox", id="contrib" name="contrib" checked)
+                  else
+                    input(type="checkbox", id="contrib" name="contrib")
+                  span  Can post photos
+              p.lh-copy.measure.mv0
+                label
+                  if user.approved == true
+                    input(type="checkbox", id="approved" name="approved" checked)
+                  else
+                    input(type="checkbox", id="approved" name="approved")
+                  span  Can see photos
+              input.mv1.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="✏️ Edit User")
+            

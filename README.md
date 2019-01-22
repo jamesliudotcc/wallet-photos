@@ -4,9 +4,9 @@
 
 A photo-sharing web app for slightly paranoid parents who do not want to share their family photos with Facebook, Google, Palantir, and the rest. The idea is to make it possible for anyone with some technical savvy to deploy their own photo sharing app onto the could.
 
+How paranoid exactly. Users must sign up in order to access the site, but on sign up, the user is treated to a permission pending landing page. Only after an admin (a parent, but others can be made admins as well) approves a user is that user allowed to see photos. A separate permission is given for posting photos as well. A family setting is in the database but not currently implemented. The idea is to safely post super-private pictures of (say) your baby in the bath, or are super-tacky, or whatever.
 
-
-Technology Choices
+## Technology Choices
 
 #### JS |> TS
 
@@ -14,13 +14,13 @@ Typescript is a tool I enjoy using to keep my JavaScript code tidy and to help m
 
 #### Node |> Express
 
-Only so many new technologies at one time. Only so many new technologies at one time.
+I seriously considered implementing this in Flask or Django because I prefer to work in Python. But as much as I prefer Python, I know and understand Javascript, Node.js, and Express much better at this stage.
 
 #### SQLite |> TypeORM |> PostgreSQL |> TypeORM
 
-I chose SQLite to ease deployment (one less server to configure!) and so that eventually I will be able to use embedded SQLite to make an offline-first mobile experience. SQLite's documentation suggests that it can handle 100k transactions. Since each photo album will be deployed independently, and is private to friends and family, 100k seems more than enough. When I walked through the [checklist](https://www.sqlite.org/whentouse.html), it is clear enough that a full-featured database engine solves problems that I do not expect to encounter. So why not choose something that just works?
+I initially chose SQLite to ease deployment (one less server to configure!) and so that eventually I will be able to use embedded SQLite to make an offline-first mobile experience. SQLite's documentation suggests that it can handle 100k transactions. Since each photo album will be deployed independently, and is private to friends and family, 100k seems more than enough. When I walked through the [checklist](https://www.sqlite.org/whentouse.html), it is clear enough that a full-featured database engine solves problems that I do not expect to encounter. So why not choose something that just works?
 
-TypeORM follows from choosing Typescript. It was designed to play well with a TS workflow, and is reasonably [well documented](https://github.com/typeorm/typeorm).
+TypeORM follows from choosing Typescript. It was designed to play well with a TS workflow, and is reasonably [well documented](https://github.com/typeorm/typeorm). The documentation uses async/await syntax so the code is easier to understand. Also, the models are declared using decorators to describe database columns, which again aids in code clarity.
 
 However, as nice as it is to work with, in some ways it is not production ready. For example, it has problems interacting with foreign key constraints in SQLite. https://github.com/typeorm/typeorm/issues/2576
 

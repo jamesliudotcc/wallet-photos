@@ -30,6 +30,11 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.put('/', async (req, res) => {
+  await userRepository.update({ approved: false }, { approved: true });
+  res.redirect('/admin');
+});
+
 router.put('/:idx', async (req, res) => {
   let user = await userRepository.findOne(req.params.idx);
   let numberOfAdmins = await userRepository.count({ where: { admin: true } });

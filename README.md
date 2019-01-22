@@ -14,7 +14,7 @@ Typescript is a tool I enjoy using to keep my JavaScript code tidy and to help m
 
 #### Node |> Express
 
-I seriously considered implementing this in Flask or Django because I prefer to work in Python. But as much as I prefer Python, I know and understand Javascript, Node.js, and Express much better at this stage.
+I seriously considered implementing this in Flask or Django because I prefer to work in Python. But as much as I prefer Python, I know and understand Javascript, Node.js, and Express much better at this stage. Adding Typescript was enough new technology.
 
 #### SQLite |> TypeORM |> PostgreSQL |> TypeORM
 
@@ -59,27 +59,33 @@ Sharp
 
 Sharp is a performant image library with clear [documentation](http://sharp.pixelplumbing.com/en/v0.17.0/). I use it to parse incoming jpegs into smaller file sizes.
 
-### Sprint 1
+## Routes
 
-First weekend + M+T: All core functionality complete
+| Route         | HTTP Verb | Description                                                  |
+| ------------- | --------- | ------------------------------------------------------------ |
+| /             | GET       | Shows the login and signup forms. Since that is all the page does, I didn' create a separate GET page for each of those. |
+| /photos       | GET       | Shows the photos.                                            |
+| /photos/:idx  | DELETE    | Delete a specific photo.                                     |
+| /auth/logout  | GET       | Logs a user out and redirects to /.                          |
+| /auth/pending | GET       | This is the landing route for a successful login or signup. If the user is approved to see photos, she is redirected to the photos page immediately. Otherwise, the page shows a message that the approval is pending. |
+| /auth/signup  | POST      | Processes user signup. There are a few validations done here. After signup, the user is logged in. Unfortunately for the user, an admin still has to approve the user. |
+| /auth/login   | POST      | Logs in the user.                                            |
+| /upload       | GET       | Gets the page with an upload form.                           |
+| /upload       | POST      | Uploads a photo                                              |
+| /admin        | GET       | Gets the admin panel. For now, the admin panel is only for editing users. |
+| /admin        | PUT       | This is the route for the approve all users button. This allows the following workflow: delete all users who are not approved of, and then approve all of the remaining users. |
+| /adimin/:idx  | PUT       | This                                                         |
+| /admin/:idx   | DELETE    | Deletes the user.                                            |
+| /comment/     | POST      | The incoming message says who said what to what photograph.  |
+| /heart/       | POST      | The incoming message says who liked what photograph. I was kind of tempted to allow unlimited hearts so that, even given a limited user-base, parents would get a lot of love just by people clicking the button over and over again. But I decided to implement a saner version where each user has liked a photo, or not, only once. But no take-backs. |
 
 
 
+### Sprints
 
+There was some attempt to organize the week into sprints, one for basic functionality, one to get to MVP, and one to work on styling. That did not go according to plan. Basic functionality was delayed because I was busy trying to learn backend Typescript while I was writing my initial functionality.  An entire day was spent trying to get passwordless sign ins to work, first using Auth0, next using a Node.js library. With this project behind me, and some hard-won programming knowledge, I am perhaps ready to try again with either one or the other.
 
-### Sprint 2
-
-W + Th: MVP: All functionality + basic styling
-
-
-
-
-
-### Sprint 3
-
-F + Second weekend: Finish, README, stretch goals
-
-Deployment
+### Deployment
 
 I ran into some difficulties deploying the app to the internet. For whatever reason, the Typescript compiler on the server did not accept the //@ts-ignore directive for two lines of authentication code. So I decided to push a compiled JS version to the server instead, which ran into its own set of problems. This turned out to be because a new version of Typescript that was pushed during project week won't work with my code.
 
@@ -92,3 +98,7 @@ Other than those three problems, deployment was fine, if non-trivial. I chose to
 Eventually, I figured it all out, and now it is running on ts-node on the server, being monitored by PM2, which restarts the instance whenever it stops working. Neat.
 
 It is not as if deploying to Heroku was a trivial affair either. 
+
+## What's Next
+
+I want to get multiple uploads working. Styling could be better.

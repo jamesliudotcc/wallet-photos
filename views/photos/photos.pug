@@ -1,19 +1,19 @@
 extends ../layout.pug
 block content
   each photo in photos
-    article
+    article.ph6-l
       img(src=photo.smUrl, srcset=`${photo.smUrl} 512w, ${photo.mdUrl} 1024w, ${photo.lgUrl} 2048w`, sizes="(max-width:500px) 100vw, (max-width:1000px) 100vw,")
-
+    aside.ph3-ns.pb3-ns.ph6-l.mb4-ns
       form(action="/heart" method="POST")
         input(type="hidden", name="userId" value=user.id)
         input(type="hidden", name="photoId" value=photo.id)
-        input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit" value="♡")
+        input.bg-white.f6.link.dim.ba.ph3.pv2.dib.black.mr2(type="submit" value="♡")
         if photo.hearts == 1
           ='1 ♡'
         if photo.hearts > 1
           =photo.hearts 
           ='♡s'
-      ul.pl0
+      ul.list.pl0
         each comment in photo.comments
           li
             strong
@@ -23,7 +23,7 @@ block content
       form(action="/comment" method="POST")
         input(type="hidden", name="userId" value=user.id)
         input(type="hidden", name="photoId" value=photo.id)
-        textarea(name="comment", cols="30", rows="4")
+        textarea.db.border-box.hover-black.w-100.measure.ba.b--black-20.pa2.br2.mb2(name="comment", cols="60", rows="4")
         div
           input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="Comment")
         div
@@ -32,4 +32,3 @@ block content
       if user.admin == true
         form(action=`/photos/${photo.id}?_method=DELETE` method="POST")
           input.bg-white.f6.link.dim.ba.ph3.pv2.mb2.dib.black.mr2(type="submit", value="🗑️")
-    hr

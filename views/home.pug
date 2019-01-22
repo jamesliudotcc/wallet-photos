@@ -2,27 +2,28 @@ extends ./layout.pug
 
 block content
 
-  .w-100.cf.dark-gray.bg-white.pa3.pa4-m.pa5-l.mw9.center
-    h1 Login
-    form(method="POST", action="/auth/login")
-      p Email
-        input(type="email", name="email" id="email"  value=previousData ? previousData.email : '')
-      p Password
-        input(type="password" name="password" id="password")
-      p
-        input(type="submit" value="Submit")
+  .w-100.cf.dark-gray.bg-white.pa3.pa4-m.pa5-l.center
+    .fl.w-100.w-50-ns
+      
+      form.pa3(method="POST", action="/auth/login")
+        legend.f4.fw6.ph0.mh0 Log In
+        label.db.fw6.lh-copy.f6(for="email") Email
+        input.b.pa2.input-reset.ba.bg-transparent.w-100(type="email", name="email" id="email"  value=previousData ? previousData.email : '')
+        label.db.fw6.lh-copy.f6(for="password") Password
+        input.b.pa2.input-reset.ba.bg-transparent.w-100(type="password" name="password" id="password")
 
-    hr
+        input.b.ph3.pv2.input-reset.ba.b--black.bg-transparent.grow.pointer.f6.dib(type="submit" value="Submit")
 
-    h1 Signup
-    form(method="POST", action="/auth/signup")
-      p Name
-        input(type="text" name="name" id="name" value=previousData ? previousData.name : '')    
-      p Email
-        input(type="text", name="email" id="email"  value=previousData ? previousData.email : '')
-      p Password
-        input(type="password" name="password" id="password")
-      p Retype Password
-        input(type="password" name="password2" id="password2")
-      p
-        input(type="submit" value="Submit")
+    .fl.w-100.w-50-ns
+      form.pa3(method="POST", action="/auth/signup")
+        legend.f4.fw6.ph0.mh0 Sign Up
+        label.db.fw6.lh-copy.f6(for="name") Name
+        input.b.pa2.input-reset.ba.bg-transparent.w-100(type="text" name="name" id="name" value=previousData ? previousData.name : '')    
+        label.db.fw6.lh-copy.f6(for="email") Email
+        input.b.pa2.input-reset.ba.bg-transparent.w-100(type="text", name="email" id="email"  value=previousData ? previousData.email : '')
+        label.db.fw6.lh-copy.f6(for="password") Password
+        input.b.pa2.input-reset.ba.bg-transparent.w-100(type="password" name="password" id="password")
+        label.db.fw6.lh-copy.f6(for="password2") Retype Password
+        input.b.pa2.input-reset.ba.bg-transparent.w-100(type="password" name="password2" id="password2")
+
+        input.b.ph3.pv2.input-reset.ba.b--black.bg-transparent.grow.pointer.f6.dib(type="submit" value="Submit")
